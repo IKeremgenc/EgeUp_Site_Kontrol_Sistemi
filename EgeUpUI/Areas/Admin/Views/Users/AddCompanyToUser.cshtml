@@ -1,0 +1,68 @@
+﻿@model EgeUpUI.Dtos.CompanyToUserDto.AddCompanyToUser
+
+@{
+    ViewData["Title"] = "Firma Ekle";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+    var userName = ViewBag.UserName as string;
+}
+
+<h2>@userName Kullanıcısına Firma Atama</h2>
+
+<form asp-controller="Users" asp-action="AddCompanyToUser" method="post">
+    <input type="hidden" name="userId" value="@ViewBag.UserId" />
+
+
+
+    <div class="form-group">
+        <label for="companyId">Firma Seç:</label>
+        @if (Model.Companies!=null)
+        {
+            <select class="form-control" name="companyId" id="companyId">
+                <option value="">Firma Seçiniz</option>
+                @foreach (var company in Model.Companies)
+                {
+                    <option value="@company.Id">@company.CompanyName</option>
+                }
+            </select>
+        }
+        else
+        {
+        <select class="form-control" name="companyId" id="companyId">
+            <option value="">Firma Seçiniz</option>
+            @foreach (var company in Model.Companies)
+            {
+                <option value="@company.Id">@company.CompanyName</option>
+            }
+        </select>
+        }
+      
+    </div>
+
+    <button type="submit" class="btn btn-primary">Firma Ata</button>
+</form>
+
+<hr />
+
+<h2>Firma Listesi</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Firma ID</th>
+                <th>Firma Adı</th>
+                <th>Firma Durumu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var company in Model.Companies)
+            {
+                <tr>
+                    <td>@company.Id</td>
+                    <td>@company.CompanyName</td>
+                    <td>@(company.Statues ? "Aktif" : "Pasif")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

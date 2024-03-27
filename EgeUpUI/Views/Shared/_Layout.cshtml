@@ -1,0 +1,27 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    @await Html.PartialAsync("/Views/Layout/_HeaderPartialLayout.cshtml")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+</head>
+
+<body class="g-sidenav-show  bg-gray-100">
+    @await Html.PartialAsync("/Views/Layout/_NavBarPartial.cshtml")
+    <main class="main-content position-relative max-height-vh-300 h-300 border-radius-lg mt-4">
+      
+        <div class="container-fluid py-4 px-5">
+        @RenderBody()
+            
+        </div>
+    </main>
+ 
+    @await Html.PartialAsync("/Views/Layout/_ScriptPartial.cshtml")
+</body>
+
+</html>

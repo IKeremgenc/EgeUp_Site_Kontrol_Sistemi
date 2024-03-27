@@ -1,0 +1,63 @@
+﻿<!--   Core JS Files   -->
+<script src="~/corporate-ui-dashboard-main/assets/js/core/popper.min.js"></script>
+<script src="~/corporate-ui-dashboard-main/assets/js/core/bootstrap.min.js"></script>
+<script src="~/corporate-ui-dashboard-main/assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script src="~/corporate-ui-dashboard-main/assets/js/plugins/smooth-scrollbar.min.js"></script>
+
+
+<script src="~/js/site.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- Control Center for Corporate UI Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="~/corporate-ui-dashboard-main/assets/js/corporate-ui-dashboard.min.js?v=1.0.0"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.SilWebsite').click(function () {
+            var id = $(this).data('id');
+
+            Swal.fire({
+                title: 'İptal Edilecek!',
+                text: "İptal etmek istediğinizden emin misiniz!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet!',
+                cancelButtonText: 'İptal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const url = '/WebList/Delet/' + id;
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        success: function (data) {
+                            Swal.fire(
+                                'İptal Edildi!',
+                                'Seçili toplantı iptal edildi..',
+                                'success'
+                            );
+                            timer: 3500
+                            location.reload();
+                        },
+                        error: function (err) {
+                            toastr.error("Bir hata oluştu! " + `${err.statusText}`);
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+

@@ -1,0 +1,140 @@
+﻿@using X.PagedList.Mvc;
+@using X.PagedList.Web;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Fluent;
+@using X.PagedList.Web.Common;
+
+
+
+
+
+@model X.PagedList.IPagedList<DataaccsessLayer.Table.AppUser>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Admin/HomePageAdmin/Index/">Ana Sayfa</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/Users/Index">Kullanıcılar</a></li>
+    </ol>
+</nav>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Tüm Kullanıcılar</h3>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("Index", "Users", FormMethod.Get))
+        {
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="searchString" placeholder="Ara...">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Ara</button>
+                </div>
+            </div>
+        }
+
+        <div class="table-responsive">
+            <table class="table table-hover text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>UserName</th>
+                        <th>Email</th>
+                        <th>Şirket</th>
+                        <th>Firma Ekle</th>
+                        <th>Kullanıcıyı Sil</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                          
+                                @if (user.Companyid != null && user.Company != null)
+                                {
+                                <td>@user.Company.CompanyName</td>
+                                }
+                                else
+                                {
+                                <td>
+                                    <span class="badge badge-sm border border-danger text-danger bg-danger">
+                                        <svg width="9" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" class="me-1">
+                                            <path d="M1 4.42857L3.28571 6.71429L9 1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        Firma Yok
+                                    </span>
+                                </td>
+                                }
+                          
+                            <td class="text-center">
+                                <a href="/Admin/Users/AddCompanyToUser/@user.Id" class="btn btn-outline-success">Firma Ekle</a>
+                            </td>
+                            <td class="text-center">
+                                <button onclick="confirmDelete('@user.Id')" class="btn btn-outline-danger">Sil</button>
+                            </td>
+                           
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div>
+    @Html.PagedListPager((X.PagedList.IPagedList)Model,pageNumber=>Url.Action("Index",new {pageNumber}),
+
+    new PagedListRenderOptions
+    {
+    // UlElementClasses = new[] { "pagination", "my-ul-class" },
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+    ContainerDivClasses = new[] { "navigation" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    }
+    )
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    function confirmDelete(userId) {
+        Swal.fire({
+            title: 'Kullanıcıyı silmek istediğinize emin misiniz?',
+            text: "Bu işlem geri alınamaz!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Evet, sil!',
+            cancelButtonText: 'Vazgeç'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/Admin/Users/DeleteUser/' + userId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            throw new Error('Silme işlemi başarısız oldu.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Hata:', error);
+                    });
+            }
+        });
+    }
+</script>

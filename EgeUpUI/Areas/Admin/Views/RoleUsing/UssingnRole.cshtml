@@ -1,0 +1,49 @@
+﻿@model EgeUpUI.Areas.Admin.Models.UserRoleViewModel
+@{
+    ViewData["Title"] = "UssingnRole";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Admin/HomePageAdmin/Index">Home</a></li>
+    </ol>
+</nav>
+
+<h1>Roll Ata</h1>
+<h3>Kullanıcının Mevcut Rolü: @Model.UserRole</h3>
+
+<form id="roleUpdateForm" asp-area="Admin" asp-action="UpdateRole" asp-controller="RoleUsing" method="post">
+    <div class="form-group">
+        <label>Yeni Rol:</label>
+        <select class="form-select" name="selectedRole" id="selectedRole">
+            <option value="">-- Yeni Rol Seçin --</option>
+            @foreach (var role in ViewBag.OtherRoles)
+            {
+                <option value="@role.Value">@role.Text</option>
+            }
+        </select>
+    </div>
+    <input type="hidden" name="userId" value="@Model.UserId" />
+    <button type="button" onclick="submitForm()" class="btn btn-primary">Rolü Güncelle</button>
+</form>
+
+<script>
+    function submitForm() {
+        var selectedRole = document.getElementById('selectedRole').value;
+        var userId = document.querySelector('input[name="userId"]').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Admin/RoleUsing/UpdateRole/', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                toastr.success('Rol başarıyla güncellendi.');
+                window.location.href = '/Admin/HomePageAdmin/Index';
+            }
+        };
+        var formData = 'userId=' + userId + '&selectedRole=' + selectedRole;
+        xhr.send(formData);
+    }
+
+</script>

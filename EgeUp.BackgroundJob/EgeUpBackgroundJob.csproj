@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+   
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.6" />
+   
+    <PackageReference Include="Hangfire.Core" Version="1.8.6" />
+   
+    <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BussinesLayer\BussinesLayer.csproj" />
+	  <ProjectReference Include="..\DataaccsessLayer\DataaccsessLayer.csproj" />
+	  <!--<ProjectReference Include="..\EgeUpUI\EgeUpUI.csproj" />-->
+  </ItemGroup>
+
+</Project>

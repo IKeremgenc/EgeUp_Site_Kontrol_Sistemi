@@ -1,0 +1,38 @@
+﻿
+
+@model EgeUpUI.Dtos.AddWebsiteDto.WebsiteListDto
+<style>
+
+    .modal-content {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #Email {
+        border-bottom: 1px solid #ccc;
+    }
+</style>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Website: <span id="websiteName">@ViewBag.WebsiteName</span></h5>
+
+            </div>
+            <form action="/Admin/WebListAdmin/createMail2" method="post" id="exampleModalForm">
+                <input type="hidden" typeof="number" value="@Model.WebsiteID" name="WebsiteID" id="WebsiteID" />
+
+                <label for="email">Mail Ekle:</label>
+                <input type="text" name="email" id="Email" class="form-control" maxlength="51" />
+
+                <hr />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn-create-email">Ekle</button>
+                    <button type="button" class="btn btn-danger" id="closeModal">Çık</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

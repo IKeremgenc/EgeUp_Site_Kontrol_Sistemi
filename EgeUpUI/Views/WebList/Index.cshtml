@@ -1,0 +1,168 @@
+﻿@using X.PagedList.Mvc;
+@using X.PagedList.Web;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Fluent;
+@using X.PagedList.Web.Common;
+
+@model X.PagedList.IPagedList<DataaccsessLayer.Table.WebsiteUrl>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/HomePage/Index/">Ana Sayfa</a></li>
+        <li class="breadcrumb-item"><a href="/WebList/Index"> Siteler</a></li>
+
+    </ol>
+</nav>
+<br />
+
+<div class="row">
+    <div class="col-12">
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-6 text-end">
+                <form class="search-form d-flex" asp-controller="WebList" asp-action="Index" method="post">
+                    <input class="form-control search-input me-1" type="text" name="aramaTerimi" placeholder="Ara..." style="width: calc(100% - 100px); height: 38px;" />
+                    <button class="btn btn-outline-primary search-button" type="submit" style="height: 38px;">Ara</button>
+                </form>
+            </div>
+
+
+        </div>
+        <div class="card border shadow-xs mb-4">
+            <div class="card-body px-0 py-0">
+
+                <div class="table-responsive p-0">
+                 
+
+                    <table class="table align-items-center mb-0">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Website Adı</th>
+                    
+                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Durum</th>
+                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Sil</th>
+                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Ekle</th>
+                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Detay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.WebsiteName</td>
+                              
+                                    <td class="text-center">
+                                        @if (item.Statues)
+                                        {
+                                            <span class="badge badge-sm border border-success text-success bg-success">
+                                                <svg width="9" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" class="me-1">
+                                                    <path d="M1 4.42857L3.28571 6.71429L9 1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                                Online
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-sm border border-danger text-danger bg-danger">
+                                                <svg width="9" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" class="me-1">
+                                                    <path d="M1 4.42857L3.28571 6.71429L9 1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                                Offline
+                                            </span>
+                                        }
+                                    </td>
+
+
+                                    <td>
+                                        <button class="btn btn-danger SilWebsite" data-id="@item.WebsiteID">Sil</button>
+
+
+
+
+                                      
+
+
+
+
+
+
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm float-right Mail-Set" data-websiteid="@item.WebsiteID">Mail Ekle</button>
+
+
+                                        <div id="modalContainer" aria-hidden="true">
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <button class="btn btn-warning btn-sm float-right Mail-detay" data-websiteid="@item.WebsiteID">Mail Detay</button>
+
+
+                                        <div id="modalContainerx" aria-hidden="true">
+                                        </div>
+                                    </td>
+
+
+
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @Html.PagedListPager((X.PagedList.IPagedList)Model,pageNumber=>Url.Action("Index",new {pageNumber}),
+
+    new PagedListRenderOptions
+    {
+    // UlElementClasses = new[] { "pagination", "my-ul-class" },
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+    ContainerDivClasses = new[] { "navigation" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    }
+    )
+</div>
+
+
+<script>
+    $(function () {
+        $('.Mail-detay').click(function () {
+            var websiteID = $(this).data('websiteid');
+            const url = '/WebList/Detay/' + websiteID;
+
+            $.get(url).done(function (data) {
+                $('#modalContainerx').html(data);
+                $('#exampleModals').modal('show');
+            });
+        });
+    });
+
+</script>
+<script>
+    $(function () {
+        $('.Mail-Set').click(function () {
+            var websiteID = $(this).data('websiteid'); 
+            const url = '/WebList/Update/' + websiteID; 
+
+            $.get(url).done(function (data) {
+                $('#modalContainer').html(data);
+                $('#exampleModal').modal('show');
+            });
+        });
+    });
+
+</script>

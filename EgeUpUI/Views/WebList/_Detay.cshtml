@@ -1,0 +1,67 @@
+﻿@model List<DataaccsessLayer.Table.Mail>
+<style>
+    .modal-backdrop.show {
+        opacity: 1 !important;
+        background-color: rgba(255, 250, 240, 0.5) !important;
+    }
+
+    .modal-content {
+        background-color: rgba(255, 250, 240, 0.9); 
+        border: 2px solid rgba(0, 0, 0, 0.1); 
+        box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.3); 
+    }
+</style>
+
+
+<div class="modal fade" id="exampleModals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Mail Detayı</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">E-Posta Adresi</th>
+                            <th scope="col">E-Posta Sil</th>
+                        </tr>
+                       
+                      
+                    </thead>
+                    <tbody>
+                        @foreach (var mail in Model)
+                        {
+                            <tr>
+                                <td>@mail.Email</td>
+                                <td class="text-center"><button class="btn btn-danger" onclick="deleteMail(@mail.MailID)">E-Posta Sil</button></td>
+                            </tr>
+                            
+                        }
+                   
+                    </tbody>
+                </table>
+            </div>
+          
+        </div>
+    </div>
+</div>
+<script>
+    function deleteMail(mailId) {
+        $.post('/WebList/DetayDelete/' + mailId, function (data) {
+            $('#exampleModals').modal('hide');
+
+            if (data) {
+                $('#exampleModals .modal-content').html(data); 
+                toastr.success('E-posta başarıyla silindi.', 'Başarılı İşlem');
+            } else {
+                toastr.error('E-posta bulunamadı.', 'Hata');
+            }
+        }).fail(function () {
+            toastr.error('E-posta silinirken bir hata oluştu.', 'Hata');
+        });
+    }
+
+
+</script>

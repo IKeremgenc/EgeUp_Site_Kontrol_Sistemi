@@ -1,0 +1,127 @@
+﻿@using X.PagedList.Mvc;
+@using X.PagedList.Web;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Fluent;
+@using X.PagedList.Web.Common;
+
+@model X.PagedList.IPagedList<DataaccsessLayer.Table.WebsiteUrl>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Admin/HomePageAdmin/Index/">Ana Sayfa</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/AddWebsiteAdmin/Index"> Site Ekle</a></li>
+
+    </ol>
+</nav>
+<h1>Site Ekle</h1>
+
+
+
+<div class="row">
+    <div class="col-12">
+
+        <div class="card-body px-0 py-0">
+            <div class="card-header">
+                <button id="addorupdate-website" class="btn btn-success btn-sm float-right"><span class="fas fa-plus"></span> Site Ekle</button>
+
+
+                <div id="modalContainer" aria-hidden="true">
+                </div>
+
+            </div>
+            <div class="table-responsive p-0">
+                <table class="table">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="text-secondary text-xs font-weight-semibold opacity-7">Site Adı</th>
+                            <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Site Mail</th>
+                            <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Durumu</th>
+                        </tr>
+                    </thead>
+                    @if (Model != null)
+                    {
+                        foreach (var website in Model)
+                        {
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <p class="text-sm font-weight-normal mb-0">@website.WebsiteName</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-sm font-weight-normal mb-0">@website.Email</p>
+                                    </td>
+                                    <td class="align-middle">
+                                        @if (website.Statues == true)
+                                        {
+                                            <span class="badge badge-sm border border-success text-success bg-succses">
+                                                <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="me-1ca">
+                                                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
+                                                </svg>
+                                                Online
+                                            </span>
+                                        }
+                                        @if (website.Statues == false)
+                                        {
+                                            <span class="badge badge-sm border border-warning text-warning bg-danger">
+                                                <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="me-1ca">
+                                                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
+                                                </svg>
+                                                Offline
+                                            </span>
+                                        }
+
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        }
+                    }
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div>
+    @Html.PagedListPager((X.PagedList.IPagedList)Model,pageNumber=>Url.Action("Index",new {pageNumber}),
+
+    new PagedListRenderOptions
+    {
+    // UlElementClasses = new[] { "pagination", "my-ul-class" },
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+    ContainerDivClasses = new[] { "navigation" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    }
+    )
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    $(function () {
+        const url = '@Url.Action("Add", "AddWebsiteAdmin", new { area = "Admin" })';
+
+        const placeHolderDiv = $('#modalContainer');
+
+        $('#addorupdate-website').click(function () {
+            $.get(url).done(function (data) {
+                placeHolderDiv.html(data);
+                $('#exampleModalLabelWeb').modal('show');
+                toastr.info('Lütfen URL olarak veri girin. Örnek: https://www.example.com', 'Dikkat!', {
+                    timeOut: 4000,
+                    progressBar: true
+                });
+            });
+        });
+    });
+</script>
+

@@ -1,0 +1,72 @@
+﻿<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Yeni Firma Ekle</h5>
+
+            </div>
+            <div class="modal-body">
+                <form id="addCompanyForm" asp-area="Admin" asp-action="Create" asp-controller="UserCompanyCreate" method="post">
+                    <div class="form-group">
+                        <label for="companyName">Firma Adı</label>
+                        <input type="text" class="form-control" id="companyName" name="CompanyName" maxlength="51">
+                    </div>
+                    <button type="submit" class="btn btn-success">Firma Ekle</button>
+                    <button id="cancel-modal" type="button" class="btn btn-danger">Çık</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#addCompanyForm').submit(function (e) {
+        e.preventDefault();
+        const form = $(this);
+        const companyName = $('#companyName').val();
+
+        if (!companyName || companyName.length > 50) {
+            if (!companyName) {
+                toastr.error('Firma adı boş olamaz!', 'Hata');
+            } else {
+                toastr.error('Firma adı maksimum 50 karakter olmalıdır!', 'Hata');
+            }
+        } else {
+            const submitUrl = '/Admin/UserCompanyCreate/Create';
+
+            $.ajax({
+                type: 'POST',
+                url: submitUrl,
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success('Başarılı! İşlem tamamlandı.', 'Başarılı!');
+                        toastr.options.showDuration = 1000;
+
+                     
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        toastr.error('Form gönderilirken bir hata oluştu.', 'Hata');
+                    }
+                },
+                error: function (xhr) {
+                    toastr.error('Form gönderilirken bir hata oluştu.', 'Hata');
+                }
+            });
+        }
+    });
+
+    $('#cancel-modal').click(function () {
+        $('form')[0].reset();
+        $('#exampleModal').modal('hide');
+    });
+</script>
+
+<script>
+
+    $('#cancel-modal').click(function () {
+        $('form')[0].reset();
+        $('#exampleModal').modal('hide');
+    });
+</script>

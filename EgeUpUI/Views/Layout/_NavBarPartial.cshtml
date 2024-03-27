@@ -1,0 +1,86 @@
+﻿<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-5 bg-slate-900 fixed-start" id="sidenav-main">
+    <div class="sidenav-header">
+        <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+        <a class="navbar-brand d-flex align-items-center m-0" href="#" target="_blank">
+            <span class="font-weight-bold text-lg mx-auto">EgeUp</span> 
+        </a>
+    </div>
+    <div class="collapse navbar-collapse px-4 w-auto" id="sidenav-collapse-main">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link py-3" href="/HomePage/Index/">
+
+                    <i class="bi bi-house-door fs-5"></i>
+                    <span class="nav-link-text ms-2">Ana Sayfa</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link py-3" href="/AddWebsite/Index/">
+
+                    <i class="bi bi-plus-square fs-5"></i>
+                    <span class="nav-link-text ms-2">Site Ekle</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link py-3" href="/WebList/Index/">
+
+                    <i class="bi bi-list fs-5"></i>
+                    <span class="nav-link-text ms-2">Site Listesi</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link py-3" href="/Settings/Index/">
+
+                    <i class="bi bi-gear fs-5"></i>
+                    <span class="nav-link-text ms-2">Ayarlar</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link py-3" href="/Login/Index/">
+
+                    <i class="bi bi-box-arrow-in-left fs-5"></i>
+                    <span class="nav-link-text ms-2">Çıkış</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('.nav-link[href="/Login/Index/"]').addEventListener('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: 'Çıkış yapmak istediğinize emin misiniz?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, Çıkış Yap',
+                cancelButtonText: 'İptal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Çıkış yapılıyor!',
+                        html: 'İşlem tamamlanana kadar lütfen bekleyin...',
+                        icon: 'info',
+                        showConfirmButton: false
+                    });
+
+            
+                    setTimeout(function () {
+                        window.location.replace('/Login/Index/');
+                    }, 2000);
+                }
+            });
+        });
+    });
+
+</script>
+

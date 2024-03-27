@@ -1,0 +1,198 @@
+﻿@model EgeUpUI.Dtos.UsereditDto.Useredit
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .card-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .profile-card,
+    .form-card {
+        width: 48%; 
+        margin-bottom: 20px; 
+    }
+
+    .form-card {
+        margin-left: auto; 
+    }
+</style>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/HomePage/Index/">Ana Sayfa</a></li>
+        <li class="breadcrumb-item"><a href="/Settings/Index"> Ayarlar</a></li>
+
+    </ol>
+</nav>
+<div class="pt-7 pb-6 bg-cover" style="background-image: url('/corporate-ui-dashboard-main/assets/img/header-orange-purple.jpg'); background-position: bottom;"></div>
+<div class="container">
+    <div class="card card-body py-2 bg-transparent shadow-none">
+        <div class="row">
+            <div class="col-auto">
+                <div class="avatar avatar-2xl rounded-circle position-relative mt-n7 border border-gray-100 border-4">
+                    <img src="~/corporate-ui-dashboard-main/assets/img/profile 21.png" alt="profile_image" class="w-100">
+                </div>
+            </div>
+            <div class="col-auto my-auto">
+                <div class="h-100">
+                    <h3 class="mb-0 font-weight-bold">
+                        @Model.Name
+                    </h3>
+                    <p class="mb-0">
+                        @Model.Email
+                    </p>
+                   
+                
+                </div>
+            </div>
+      
+        </div>
+    </div>
+</div>
+<div class="container my-3 py-3">
+    <div class="card-container">
+        <div class="card profile-card border shadow-xs h-100">
+            <div class="card-header pb-0 p-3">
+                <div class="row">
+                    <div class="col-md-8 col-9">
+                        <h6 class="mb-0 font-weight-semibold text-lg">Profil Bilgileri </h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-3">
+                <ul class="list-group">
+                    <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pt-0 pb-1 text-sm">
+                        <span class="text-secondary">Adı:</span> &nbsp; @Model.Name
+                    </li>
+                    <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                        <span class="text-secondary">Soyadı:</span> &nbsp; @Model.Surname
+                    </li>
+                    <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                        <span class="text-secondary">E-posta:</span> &nbsp; @Model.Email
+                    </li>
+                    <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                        @if (Model.Statues50)
+                        {
+                            <span class="text-secondary" style="color: purple;">Firmanızın 50 Adet  Site Ekleyebilir: @Model.Companynames</span>
+                       
+                        }
+                        else if (Model.Statues100)
+                        {
+                            <span class="text-secondary" style="color: purple;">Firmanızın 100 Adet  Site Ekleyebilir: @Model.Companynames</span>
+                        }
+                        else if (Model.Statuesinfinty)
+                        {
+                            <span class="text-secondary" style="color: purple;">Firmanızın Sınırsız Adet  Site Ekleyebilir: @Model.Companynames</span>
+                        }
+                       
+                    </li>
+                    <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                        <span class="text-secondary">Firmanızın Eklediği Site Sayısı:</span> &nbsp; @Model.SiteCount
+                    </li>
+              
+                </ul>
+            </div>
+        </div>
+
+        <div class="card form-card border shadow-xs h-100">
+            <div class="card-header pb-0 p-3">
+                <div class="row">
+                    <div class="col-md-8 col-9">
+                        <h6 class="mb-0 font-weight-semibold text-lg">Profilini Güncelle</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-3">
+          
+                <form asp-controller="Settings" asp-action="Index" id="yourFormId" method="post">
+                    <label>Kullanıcı Adınız</label>
+                    <input type="text" class="form-control" asp-for="Name" readonly />
+                    <br />
+                    <label>Soyadınız</label>
+                    <input type="text" class="form-control" asp-for="Surname" readonly />
+                    <br />
+                    <label>Kullanıcı Adınız</label>
+                    <input type="text" class="form-control" asp-for="Username" readonly />
+                    <br />
+                    <label>Email Adresiniz</label>
+                    <input type="text" class="form-control" asp-for="Email" readonly />
+                    <br />
+                    <label>Şifreniz</label>
+                    <input type="password" class="form-control" asp-for="Password" />
+                    @if (ViewData.ModelState["Password"] != null && ViewData.ModelState["Password"].Errors.Any())
+                    {
+                        <p class="text-danger">@ViewData.ModelState["Password"].Errors[0].ErrorMessage</p>
+                    }
+                    <br />
+                    <label>Şifreniz Tekrar</label>
+                    <input type="password" class="form-control" asp-for="ConfirmPassword" />
+                    @if (ViewData.ModelState["ConfirmPassword"] != null && ViewData.ModelState["ConfirmPassword"].Errors.Any())
+                    {
+                        <p class="text-danger">@ViewData.ModelState["ConfirmPassword"].Errors[0].ErrorMessage</p>
+                    }
+                    <br />
+
+                    <button  type="submit" class="btn btn-primary" id="BilgiGüncelle">Bilgilerimi Güncelle</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("BilgiGüncelle").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            var password = document.getElementById("Password").value;
+            var confirmPassword = document.getElementById("ConfirmPassword").value;
+
+            if (password.trim().length < 6 || confirmPassword.trim().length < 6) {
+               
+                Swal.fire({
+                    title: 'Bir Hata Oluştu',
+                    icon: 'error',
+                });
+            } else if (password !== confirmPassword) {
+               
+                Swal.fire({
+                    title: 'Şifreler Eşleşmiyor',
+                    text: 'Lütfen aynı şifreyi girin',
+                    icon: 'error',
+                });
+            } else {
+             
+                $.ajax({
+                    url: '/Settings/Index',
+                    type: 'POST',
+                    data: $('#yourFormId').serialize(),
+                    success: function (response) {
+                        $('#specificDivToUpdate').html(response);
+                        toastr.success('Bilgileriniz Güncellendi!', 'Başarılı');
+
+                        Swal.fire({
+                            title: 'Şifre Güncellendi!',
+                            text: 'Şifreniz başarıyla güncellendi.',
+                            icon: 'success',
+                        }).then(() => {
+                            window.location.href = '/Login/Index';
+                        });
+                    },
+                    error: function (error) {
+                        var errorMessage = error.status + ': ' + error.statusText;
+                        toastr.error('Bir hata oluştu! ' + errorMessage, 'Hata');
+                    }
+                });
+            }
+        });
+    });
+
+
+
+</script>

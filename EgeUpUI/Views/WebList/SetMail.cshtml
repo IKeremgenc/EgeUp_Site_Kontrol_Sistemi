@@ -1,0 +1,82 @@
+﻿@model WebsiteListDto
+<style>
+   
+    .modal-content {
+        background-color: rgba(255, 255, 255, 0.8); 
+        border: 1px solid rgba(0, 0, 0, 0.125); 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+   
+    #Email {
+        border-bottom: 1px solid #ccc; 
+    }
+</style>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Website: <span id="websiteName">@ViewBag.WebsiteName</span></h5>
+
+            </div>
+            <form method="post" asp-action="Update" asp-controller="WebList"  class="modal-body">
+
+                <input type="hidden" asp-for="WebsiteID" id="websiteID" />
+
+                <label asp-for="Mails.Email">Mail Ekle:</label>
+                <input asp-for="Mails.Email" id="Email" class="form-control" maxlength="51" />
+
+                <hr />
+                <div class="modal-footer">
+                    <button  type="submit" class="btn btn-primary">Ekle</button>
+                    <button id="cancel-modal" type="button" class="btn btn-danger">Çık</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $('#exampleModal form').submit(function (e) {
+        e.preventDefault();
+
+        var mailValue = $('#Email').val();
+        var websiteID = $('#websiteID').val();
+
+        if (!mailValue || mailValue.trim() === '' || mailValue.indexOf('.com') === -1) {
+            toastr.error('Lütfen geçerli bir e-posta adresi girin.', 'Hata');
+            return;
+        }
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'POST',
+            data: $(this).serialize(), 
+            success: function (response) {
+                toastr.success('Başarılı! İşlem tamamlandı.', 'Başarılı!');
+                toastr.options.showDuration = 1000;
+
+              
+                setTimeout(function () {
+                    $('form')[0].reset();
+                    $('#exampleModal').modal('hide');
+                }, 1500);
+            },
+            error: function (xhr) {
+                toastr.error('Form gönderilirken bir hata oluştu.', 'Hata');
+            }
+        });
+    });
+
+
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('#cancel-modal').click(function () {
+            $('form')[0].reset();
+            $('#exampleModal').modal('hide');
+        });
+    });
+</script>

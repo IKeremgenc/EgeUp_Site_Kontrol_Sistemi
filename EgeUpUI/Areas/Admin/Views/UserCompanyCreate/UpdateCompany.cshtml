@@ -1,0 +1,69 @@
+﻿@model EgeUpUI.Areas.Admin.Models.DetayCompany.DetayCompanyViewModel
+@{
+    ViewData["Title"] = "UpdateCompany";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<div @* class="container" *@>
+  
+
+    <div class="card card-body py-2 bg-transparent shadow-none">
+        <div class="row">
+            <div class="col-auto my-auto">
+                <div class="h-100">
+                    <h3 class="mb-3 font-weight-bold" >Firma Adı: @Model.CompanyName</h3>
+                    <p class="mb-3" >
+                        @if (Model.Status50)
+                        {
+                        <p style="color: red;"> Firmanın Site Ekleme Hakkı: 50 Website Ekleme Hakı Var  </p>
+                            }
+                        else if (Model.Status100)
+                        {
+                        <p style="color: red;">Firmanın Site Ekleme Hakkı: 100 Website Ekleme Hakı Var  </p>
+                                    }
+                        else if (Model.Statuesinfinty)
+                        {
+                        <p style="color: red;">Firmanın Site Ekleme Hakkı: Sınırsız Website Ekleme Hakı Var  </p>
+                                    }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover text-nowrap mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Adı</th>
+                <th>Mail</th>
+                <th>Firma</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.Company</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <form id="updateForm" action="/Admin/UserCompanyCreate/UpdateCompany" method="post" class="mt-4">
+        <div class="form-group">
+            <label for="selectedStatus">Hak Güncelleme </label>
+            <select class="form-select" aria-label="Hak Ekleme Durumu" name="selectedStatus" id="selectedStatus">
+                <option value="Statues50" @(Model.Status50 ? "selected" : "")>50 Website Ekleme Hakı Ver</option>
+                <option value="Statues100" @(Model.Status100 ? "selected" : "")>100 Website Ekleme Hakı Ver</option>
+                <option value="Statuesinfinty" @(Model.Statuesinfinty ? "selected" : "")>Sınırsız Website Ekleme Hakı Ver</option>
+            </select>
+        </div>
+        <input type="hidden" name="id" value="@Model.CompanyId" />
+
+        <button type="submit" class="btn btn-outline-success mt-3">Güncelle</button>
+    </form>
+</div>

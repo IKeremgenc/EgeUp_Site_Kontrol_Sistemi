@@ -1,0 +1,84 @@
+﻿@model List<AppUser>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/HomePage/Index/">Ana Sayfa</a></li>
+
+
+    </ol>
+</nav>
+
+<div class="pt-5 pb-6 bg-cover" style="background-image: url('/corporate-ui-dashboard-main/assets/img/header-orange-purple.jpg');"></div>
+<div class="container my-3 py-3">
+    <div class="row mt-n6 mb-6">
+        <div class="col-lg-3 col-sm-6">
+            <div class="card border border-white mb-4 shadow-xs text-center">
+                <div class="card-body p-4">
+                    <i class="bi bi-globe fs-4 text-primary mb-3"></i>
+                    <p class="text-sm mb-1 text-muted">Toplam Site Sayısı</p>
+                    <h3 class="mb-0 font-weight-bold">@ViewBag.TotalWebsites</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="card border border-white mb-4 shadow-xs text-center">
+                <div class="card-body p-4">
+                    <i class="bi bi-wifi fs-4 text-danger mb-3"></i>
+                    <p class="text-sm mb-1 text-muted">Şu Anda Çevrimdışı Olan Site Sayısı</p>
+                    <h3 class="mb-0 font-weight-bold">@ViewBag.offlineWebsites</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card border border-white mb-4 shadow-xs text-center">
+                <div class="card-body p-4">
+                    <i class="bi bi-globe fs-4 text-info mb-3"></i>
+                    <p class="text-sm mb-1 text-muted">Şu Anda Çevrimiçi Olan Site Sayısı</p>
+                    <h3 class="mb-0 font-weight-bold">@ViewBag.onlineWebsites</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="card border border-white mb-4 shadow-xs text-center">
+                <div class="card-body p-4">
+                    <i class="bi bi-file-earmark-text fs-4 text-warning mb-3"></i>
+                    <p class="text-sm mb-1 text-muted"> Firmanız</p>
+                    <h3 class="mb-0 font-weight-bold">@ViewBag.CompanyName</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>Kullanıcı Adı</th>
+                <th>Soyadı</th>
+                <th>E-posta</th>
+       
+              
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.UserName</td>
+                    <td>@item.Surname</td>
+                    <td>@item.Email</td>
+                
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
